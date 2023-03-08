@@ -1,9 +1,10 @@
+if (process.env.NODE_ENV !== "production") {
+	require("dotenv").config();
+}
 const express = require("express")
 const axios = require("axios");
-const qs = require("qs");
 const cookieParser = require("cookie-parser");
 const cors = require("cors");
-var request = require("request");
 const http = require("http");
 
 const { authed_header } = require("./utils/client_auth");
@@ -14,7 +15,7 @@ const server = http.createServer(app)
 
 
 var corsOptions = {
-	origin: ["http://localhost:5173", "/\.localhost:5173/"],
+	origin: [process.env.FRONT_URI, process.env.REXP],
 	credentials: true,
 };
 
@@ -32,9 +33,8 @@ app.use(cookieParser());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-const redirect_uri = "http://localhost:4000/callback"
-const front_end_uri = "http://localhost:5173"
-const token = "eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiJjOGMyYjNjY2QwZmU2NThkOWUxNTRjOGRiZWY2MWRjZCIsInN1YiI6IjYzZWJjNDUxMWYzZTYwMDA3ZmI1NzU1YSIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.rKGRqnklOy1bcgkKQi_shG3LfyJDgjVuH37tg7E15Ac"
+
+const token = process.env.TOKEN
 
 
 app.post("/", (req, res) => {
